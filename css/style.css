@@ -1,0 +1,480 @@
+:root {
+    --primary: #2E4636; /* Deep, elegant green */
+    --accent: #A14C3A; /* Warm terracotta/wine */
+    --light: #F9F6F2; /* Soft cream/light beige */
+    --dark: #333333; /* Dark grey for text */
+    --white: #FFFFFF;
+    --body-font-family: 'Lato', 'Helvetica Neue', Arial, sans-serif;
+    --heading-font-family: 'Montserrat', 'Helvetica Neue', Arial, sans-serif;
+}
+
+/*-- -------------------------- -->
+<---        General Styles      -->
+<--- -------------------------- -*/
+
+body {
+    font-family: var(--body-font-family);
+    color: var(--dark);
+    background-color: var(--light);
+    line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--heading-font-family);
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.lead {
+    font-size: 1.25rem;
+    font-weight: 400;
+}
+
+/*-- -------------------------- -->
+<---        Navigation Bar      -->
+<--- -------------------------- -*/
+
+.navbar {
+    background-color: var(--white);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    transition: background-color 0.3s ease;
+}
+
+.navbar-brand {
+    font-family: var(--heading-font-family);
+    font-weight: 700;
+    color: var(--primary) !important;
+}
+
+.nav-link {
+    font-weight: 700;
+    color: var(--dark) !important;
+    transition: color 0.3s ease;
+    padding: 0.5rem 1.5rem; /* Adiciona mais espaço interno */
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--accent) !important;
+}
+
+/*-- -------------------------- -->
+<---        Hero Section        -->
+<--- -------------------------- -*/
+
+.hero {
+    position: relative;
+    color: var(--white);
+    text-align: center;
+    overflow: hidden;
+}
+
+.carousel-item {
+    position: relative;
+    height: 80vh;
+    min-height: 500px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.carousel-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 1;
+}
+
+.hero .container {
+    position: relative;
+    z-index: 2;
+    padding: 120px 0;
+}
+
+.carousel-item .container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    padding: 0 15px;
+}
+
+.hero-buttons {
+    margin-top: 2.5rem;
+    display: flex;
+    gap: 1.25rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.hero-buttons .btn {
+    padding: 14px 32px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-width: 2px;
+    transition: all 0.3s ease;
+    border-radius: 50px;
+    min-width: 200px;
+    backdrop-filter: blur(5px);
+}
+
+.hero-buttons .btn-primary {
+    background-color: var(--accent);
+    border-color: var(--accent);
+    color: var(--white);
+}
+
+.hero-buttons .btn-primary:hover {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.hero-buttons .btn-outline-light {
+    background-color: rgba(255,255,255,0.1);
+}
+
+.hero-buttons .btn-outline-light:hover {
+    background-color: var(--white);
+    color: var(--primary);
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.carousel-fade .carousel-item {
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+}
+
+.carousel-fade .carousel-item.active {
+    opacity: 1;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 10%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.hero:hover .carousel-control-prev,
+.hero:hover .carousel-control-next {
+    opacity: 0.8;
+}
+
+.carousel-indicators {
+    margin-bottom: 2rem;
+}
+
+.carousel-indicators button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin: 0 6px;
+    background-color: var(--white);
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.carousel-indicators button.active {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+.hero h1 {
+    font-size: 3.8rem;
+    font-weight: 700;
+    color: var(--white);
+    text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+/*-- -------------------------- -->
+<---        Content Sections    -->
+<--- -------------------------- -*/
+
+.content-section {
+    padding: 80px 0;
+}
+
+.content-section.bg-light {
+    background-color: #fff !important; /* Override bootstrap default */
+}
+
+/*-- -------------------------- -->
+<---        Card Styles         -->
+<--- -------------------------- -*/
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    overflow: hidden; /* Ensures image corners are rounded */
+    transform: translateY(0);
+    position: relative;
+}
+
+.card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.card:hover::after {
+    opacity: 1;
+}
+
+.card:hover .card-img-top {
+    transform: scale(1.05);
+}
+
+.card-img-top {
+    transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transform: scale(1);
+}
+
+.card-title {
+    color: var(--primary);
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+.card:hover .card-title {
+    color: var(--accent);
+}
+
+.card-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+}
+
+/* Removido .card-link:hover redundante já que não muda nada */
+
+/*-- -------------------------- -->
+<---     Form & Button Styles   -->
+<--- -------------------------- -*/
+
+.contact-form {
+    background-color: var(--white);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    font-weight: 700;
+    padding: 12px 30px;
+    border-radius: 50px; /* Pill-shaped buttons */
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+/*-- -------------------------- -->
+<---        Footer Section      -->
+<--- -------------------------- -*/
+
+.footer {
+    background-color: var(--primary);
+    color: var(--light);
+    padding: 50px 0;
+    text-align: center;
+}
+
+.footer a {
+    color: var(--light);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover {
+    color: var(--white);
+    text-decoration: underline;
+}
+
+.card-img-overlay-wrapper {
+    position: relative;
+    height: 220px;
+    overflow: hidden;
+}
+
+.card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.card-img-overlay {
+    background: linear-gradient(180deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.1) 30%,
+        rgba(0, 0, 0, 0.7) 70%,
+        rgba(0, 0, 0, 0.85) 100%);
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    transition: all 0.4s ease;
+    backdrop-filter: blur(1px);
+}
+
+.card-img-overlay .card-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.card-img-overlay .card-text {
+    font-size: 1rem;
+    line-height: 1.6;
+    font-weight: 500;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    display: -webkit-box;
+    display: box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.card-link:hover .card-img-overlay {
+    background: linear-gradient(180deg,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0.2) 30%,
+        rgba(0, 0, 0, 0.8) 70%,
+        rgba(0, 0, 0, 0.9) 100%);
+    backdrop-filter: blur(2px);
+}
+
+.card-link:hover .card-text {
+    -webkit-line-clamp: unset;
+    line-clamp: unset;
+}
+
+.card-link:hover .card-img {
+    transform: scale(1.05);
+}
+
+
+.card-img-top {
+  height: 220px;
+  object-fit: cover;
+}
+
+/*-- -------------------------- -->
+<---     Carousel Backgrounds   -->
+<--- -------------------------- -*/
+
+.carousel-item.bg-img-1 { background-image: url('../img/img1.png'); }
+.carousel-item.bg-img-2 { background-image: url('../img/img.santalucia.png'); }
+.carousel-item.bg-img-3 { background-image: url('../img/img.fazendasouza.png'); }
+.carousel-item.bg-img-4 { background-image: url('../img/img.terceiralegua.png'); }
+.carousel-item.bg-img-5 { background-image: url('../img/img.galopolis.png'); }
+.carousel-item.bg-img-6 { background-image: url('../img/img.turismoreligioso.png'); }
+
+/*-- -------------------------- -->
+<---     WhatsApp Float Button  -->
+<--- -------------------------- -*/
+
+.whatsapp-float {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background-color: #25D366;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+    z-index: 1000;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    cursor: pointer;
+    animation: pulse 2s infinite;
+}
+
+.whatsapp-float:hover {
+    background-color: #20BA5A;
+    transform: scale(1.1);
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+    color: #fff;
+}
+
+.whatsapp-float:active {
+    transform: scale(0.95);
+}
+
+.whatsapp-icon {
+    width: 35px;
+    height: 35px;
+    fill: #fff;
+}
+
+/* Animação de pulso */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+    }
+    50% {
+        box-shadow: 0 4px 20px rgba(37, 211, 102, 0.7);
+    }
+    100% {
+        box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+    }
+}
+
+/* Responsivo - Mobile */
+@media (max-width: 768px) {
+    .whatsapp-float {
+        bottom: 20px;
+        right: 20px;
+        width: 56px;
+        height: 56px;
+    }
+    
+    .whatsapp-icon {
+        width: 32px;
+        height: 32px;
+    }
+}
+
+@media (max-width: 480px) {
+    .whatsapp-float {
+        bottom: 15px;
+        right: 15px;
+        width: 50px;
+        height: 50px;
+    }
+    
+    .whatsapp-icon {
+        width: 28px;
+        height: 28px;
+    }
+}
