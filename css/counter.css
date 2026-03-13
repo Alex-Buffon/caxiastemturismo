@@ -29,3 +29,21 @@
 .visitor-counter:hover img {
     transform: scale(1.05);
 }
+
+@media (max-width: 768px) {
+    .stats-section .row {
+        display: flex;
+        flex-wrap: wrap;
+        margin-right: -12px;
+        margin-left: -12px;
+    }
+    .stats-section .col-md-6 {
+        flex: 0 0 50%;
+        max-width: 50%;
+        padding: 0 12px;
+    }
+    .stat-card {
+        margin-bottom: 24px;
+        padding: 20px 10px;
+    }
+}

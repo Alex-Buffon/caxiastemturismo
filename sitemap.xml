@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+    <url>
+        <loc>https://caxiastemturismo.com.br/</loc>
+        <lastmod>2026-03-12</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>1.0</priority>
+    </url>
+    <url>
+        <loc>https://caxiastemturismo.com.br/destinos/santa-lucia.php</loc>
+        <lastmod>2026-03-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+        <image:image>
+            <image:loc>https://caxiastemturismo.com.br/img/img.santalucia.png</image:loc>
+            <image:title>Santa Lúcia - Turismo Rural em Caxias do Sul</image:title>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://caxiastemturismo.com.br/destinos/fazenda-souza.php</loc>
+        <lastmod>2026-03-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+        <image:image>
+            <image:loc>https://caxiastemturismo.com.br/img/img.fazendasouza.png</image:loc>
+            <image:title>Fazenda Souza - Patrimônio Histórico e Turismo Rural</image:title>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://caxiastemturismo.com.br/destinos/terceira-legua.php</loc>
+        <lastmod>2026-03-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+        <image:image>
+            <image:loc>https://caxiastemturismo.com.br/img/img.terceiralegua.png</image:loc>
+            <image:title>Terceira Légua - Interior Rural de Caxias do Sul</image:title>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://caxiastemturismo.com.br/destinos/galopolis.php</loc>
+        <lastmod>2026-03-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+        <image:image>
+            <image:loc>https://caxiastemturismo.com.br/img/img.galopolis.png</image:loc>
+            <image:title>Galópolis - Distrito Colonial Italiano</image:title>
+        </image:image>
+    </url>
+    <url>
+        <loc>https://caxiastemturismo.com.br/destinos/turismo-religioso.php</loc>
+        <lastmod>2026-03-12</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.9</priority>
+        <image:image>
+            <image:loc>https://caxiastemturismo.com.br/img/img.turismoreligioso.png</image:loc>
+            <image:title>Turismo Religioso - Igrejas e Capelas Históricas</image:title>
+        </image:image>
+    </url>
+</urlset>
