@@ -23,10 +23,10 @@ $conn->query("ALTER TABLE depoimentos ADD COLUMN IF NOT EXISTS destino VARCHAR(2
 $conn->query("ALTER TABLE depoimentos ADD COLUMN IF NOT EXISTS ip VARCHAR(45) DEFAULT NULL;");
 $conn->query("ALTER TABLE depoimentos ADD COLUMN IF NOT EXISTS user_agent TEXT DEFAULT NULL;");
 
-if (isset($_GET['action'], $_GET['id'])) {
-    $id = (int) $_GET['id'];
-    if ($id > 0) {
-        if ($_GET['action'] === 'approve') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'], $_POST['id'], $_POST['csrf_token'])) {
+    $id = (int) $_POST['id'];
+    if ($id > 0 && verify_csrf_token($_POST['csrf_token'])) {
+        if ($_POST['action'] === 'approve') {
             $stmt = $conn->prepare("UPDATE depoimentos SET status = 'approved', aprovado_em = NOW() WHERE id = ?");
             $stmt->bind_param('i', $id);
             $stmt->execute();
@@ -34,7 +34,7 @@ if (isset($_GET['action'], $_GET['id'])) {
             header('Location: testimonials.php?msg=approved');
             exit;
         }
-        if ($_GET['action'] === 'reject') {
+        if ($_POST['action'] === 'reject') {
             $stmt = $conn->prepare("UPDATE depoimentos SET status = 'rejected' WHERE id = ?");
             $stmt->bind_param('i', $id);
             $stmt->execute();
@@ -42,7 +42,7 @@ if (isset($_GET['action'], $_GET['id'])) {
             header('Location: testimonials.php?msg=rejected');
             exit;
         }
-        if ($_GET['action'] === 'delete') {
+        if ($_POST['action'] === 'delete') {
             $stmt = $conn->prepare("DELETE FROM depoimentos WHERE id = ?");
             $stmt->bind_param('i', $id);
             $stmt->execute();
@@ -51,6 +51,9 @@ if (isset($_GET['action'], $_GET['id'])) {
             exit;
         }
     }
+    // Se falhar CSRF ou dados, redireciona com erro genérico
+    header('Location: testimonials.php?msg=error');
+    exit;
 }
 
 // Cabeça de filtro de pesquisa
@@ -225,12 +228,27 @@ $pending_count = $conn->query("SELECT COUNT(*) AS c FROM depoimentos")->fetch_as
                                     <td><?php echo date('d/m/Y H:i', strtotime($row['criado_em'])); ?></td>
                                     <td class="text-end">
                                         <?php if($row['status'] !== 'approved'): ?>
-                                            <a href="testimonials.php?action=approve&id=<?php echo $row['id']; ?>" class="btn btn-sm btn-success me-1" title="Aprovar">Aprovar</a>
+                                            <form method="post" style="display:inline-block; margin:0;">
+                                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                                <input type="hidden" name="action" value="approve">
+                                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(generate_csrf_token()); ?>">
+                                                <button type="submit" class="btn btn-sm btn-success me-1" title="Aprovar">Aprovar</button>
+                                            </form>
                                         <?php endif; ?>
                                         <?php if($row['status'] !== 'rejected'): ?>
-                                            <a href="testimonials.php?action=reject&id=<?php echo $row['id']; ?>" class="btn btn-sm btn-warning me-1" title="Rejeitar">Rejeitar</a>
+                                            <form method="post" style="display:inline-block; margin:0;">
+                                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                                <input type="hidden" name="action" value="reject">
+                                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(generate_csrf_token()); ?>">
+                                                <button type="submit" class="btn btn-sm btn-warning me-1" title="Rejeitar">Rejeitar</button>
+                                            </form>
                                         <?php endif; ?>
-                                        <a href="testimonials.php?action=delete&id=<?php echo $row['id']; ?>" class="btn btn-sm btn-outline-danger" onclick="return confirm('Excluir este depoimento?');" title="Excluir">Excluir</a>
+                                            <form method="post" style="display:inline-block; margin:0;" onsubmit="return confirm('Excluir este depoimento?');">
+                                                <input type="hidden" name="id" value="<?php echo $row['id']; ?>">
+                                                <input type="hidden" name="action" value="delete">
+                                                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(generate_csrf_token()); ?>">
+                                                <button type="submit" class="btn btn-sm btn-outline-danger" title="Excluir">Excluir</button>
+                                            </form>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>

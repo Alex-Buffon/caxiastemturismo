@@ -13,16 +13,7 @@ $res_banners = $conn->query("SELECT * FROM banners ORDER BY ordem ASC");
 $res_destinos = $conn->query("SELECT * FROM destinos ORDER BY ordem ASC");
 $res_roteiros = $conn->query("SELECT * FROM destinos ORDER BY ordem ASC LIMIT 3");
 
-// Garantir que a tabela existe antes de consultar depoimentos aprovados
-$conn->query("CREATE TABLE IF NOT EXISTS depoimentos (
-  id INT AUTO_INCREMENT PRIMARY KEY,
-  nome VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  mensagem TEXT NOT NULL,
-  status ENUM('pending','approved','rejected') NOT NULL DEFAULT 'pending',
-  criado_em TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  aprovado_em TIMESTAMP NULL DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+
 
 $res_testimonials = $conn->query("SELECT * FROM depoimentos WHERE status = 'approved' ORDER BY aprovado_em DESC, criado_em DESC LIMIT 6");
 
@@ -43,7 +34,7 @@ if (isset($_GET['testimonial_status'])) {
 
 $page_title = $opcoes['site_titulo'] ?? "Caxias Tem Turismo - Roteiros, Gastronomia e Natureza na Serra Gaúcha";
 $page_description = $opcoes['site_descricao'] ?? "Descubra o melhor do turismo em Caxias do Sul. Explore roteiros de charme, gastronomia típica italiana, vinícolas, e as belezas naturais da Serra Gaúcha.";
-$page_keywords = $opcoes['site_keywords'] ?? "turismo caxias do sul, serra gaúcha, roteiros turísticos, gastronomia italiana, vinícolas, natureza, ecoturismo, santa lúcia, galópolis, fazenda souza";
+
 require_once 'includes/header.php';
 ?>
 <body>
@@ -51,6 +42,7 @@ require_once 'includes/header.php';
 <?php require_once 'includes/navbar.php'; ?>
 
 <main>
+    <h1 class="visually-hidden"><?php echo $page_title; ?></h1>
     <!-- SEÇÃO HERO COM CAROUSEL -->
     <section id="inicio">
         <header class="hero">
@@ -66,11 +58,7 @@ require_once 'includes/header.php';
                          role="img" 
                          aria-label="<?php echo htmlspecialchars(!empty($b['alt_text']) ? $b['alt_text'] : $b['titulo']); ?>">
                         <div class="container">
-                            <?php if($first): ?>
-                                <h1><?php echo htmlspecialchars($b['titulo']); ?></h1>
-                            <?php else: ?>
-                                <h2 class="h1"><?php echo htmlspecialchars($b['titulo']); ?></h2>
-                            <?php endif; ?>
+                            <h2 class="h1"><?php echo htmlspecialchars($b['titulo']); ?></h2>
                             <p class="lead"><?php echo htmlspecialchars($b['subtitulo'] ?? ''); ?></p>
                             <div class="hero-buttons">
                                 <a href="<?php echo !empty($b['link']) ? htmlspecialchars($b['link']) : '#roteiros'; ?>" class="btn btn-outline-light btn-lg">Explorar</a>
@@ -84,7 +72,7 @@ require_once 'includes/header.php';
                     ?>
                     <div class="carousel-item active" style="background-image: url('img/img1.png');">
                         <div class="container">
-                            <h1>Bem-vindo a Caxias do Sul</h1>
+                            <h2 class="h1">Bem-vindo a Caxias do Sul</h2>
                             <p class="lead">Explore o melhor da Serra Gaúcha.</p>
                             <div class="hero-buttons">
                                 <a href="#roteiros" class="btn btn-outline-light btn-lg">Explorar</a>

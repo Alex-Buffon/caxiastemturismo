@@ -33,9 +33,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['imagem'])) {
     }
 }
 
-// Processar Exclusão
-if (isset($_GET['excluir'])) {
-    $id = (int)$_GET['excluir'];
+// Processar Exclusão (via POST + CSRF)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['excluir'], $_POST['csrf_token'])) {
+    if (!verify_csrf_token($_POST['csrf_token'])) {
+        header("Location: banners.php?msg=erro");
+        exit;
+    }
+    $id = (int)$_POST['excluir'];
     
     // Buscar nome da imagem para deletar o arquivo
     $stmt = $conn->prepare("SELECT imagem FROM banners WHERE id = ?");
@@ -55,6 +59,8 @@ if (isset($_GET['excluir'])) {
         header("Location: banners.php?msg=excluido");
         exit;
     }
+    header("Location: banners.php?msg=erro");
+    exit;
 }
 
 // Buscar todos os banners

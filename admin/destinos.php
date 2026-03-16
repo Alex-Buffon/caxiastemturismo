@@ -96,9 +96,13 @@ $resultado = $conn->query("SELECT * FROM destinos ORDER BY is_featured DESC, ord
                                         <a href="destino_form.php?id=<?php echo $destino['id']; ?>" class="btn btn-sm btn-outline-secondary" title="Editar">
                                             <i class="bi bi-pencil"></i>
                                         </a>
-                                        <a href="destino_delete.php?id=<?php echo $destino['id']; ?>" class="btn btn-sm btn-outline-danger" title="Excluir" onclick="return confirm('Tem certeza que deseja apagar este destino?');">
-                                            <i class="bi bi-trash"></i>
-                                        </a>
+                                        <form method="post" action="destino_delete.php" style="display:inline-block; margin:0;">
+                                            <input type="hidden" name="id" value="<?php echo $destino['id']; ?>">
+                                            <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars(generate_csrf_token()); ?>">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger" title="Excluir" onclick="return confirm('Tem certeza que deseja apagar este destino?');">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
                                     </td>
                                 </tr>
                             <?php endwhile; ?>

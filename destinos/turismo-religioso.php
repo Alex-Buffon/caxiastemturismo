@@ -3,10 +3,13 @@ require_once '../admin/config.php';
 $destino_id = 5; 
 
 // Buscar dados dinâmicos do destino para SEO
-$res_dest = $conn->query("SELECT * FROM destinos WHERE id = $destino_id");
+$stmt = $conn->prepare("SELECT * FROM destinos WHERE id = ?");
+$stmt->bind_param("i", $destino_id);
+$stmt->execute();
+$res_dest = $stmt->get_result();
 $dest_data = $res_dest->fetch_assoc();
 
-$page_title = !empty($dest_data['meta_keywords']) ? $dest_data['titulo'] . " - " . $dest_data['meta_keywords'] : $dest_data['titulo'] . " - Caxias Tem Turismo";
+$page_title = $dest_data['titulo'] . " - Caxias Tem Turismo";
 $page_description = !empty($dest_data['meta_description']) ? $dest_data['meta_description'] : $dest_data['descricao'];
 $og_image = "img/" . $dest_data['imagem'];
 $is_subfolder = true;
@@ -51,34 +54,7 @@ require_once '../includes/navbar.php';
   include '../includes/testimonials-block.php';
   ?>
 
-  <section id="contato" class="content-section bg-light">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 mx-auto">
-          <h2 class="text-center mb-4">📬 Fale Conosco</h2>
-          <div class="contact-form">
-            <form>
-              <div class="mb-3">
-                <label for="name" class="form-label">Nome</label>
-                <input type="text" class="form-control" id="name" required>
-              </div>
-              <div class="mb-3">
-                <label for="email" class="form-label">Email</label>
-                <input type="email" class="form-control" id="email" required>
-              </div>
-              <div class="mb-3">
-                <label for="message" class="form-label">Mensagem</label>
-                <textarea class="form-control" id="message" rows="5" required></textarea>
-              </div>
-              <div class="text-center">
-                <button type="submit" class="btn btn-primary">Enviar Mensagem</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+
 
 <?php require_once '../includes/footer.php'; ?>
 </body>

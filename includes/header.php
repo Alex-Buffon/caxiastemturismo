@@ -1,7 +1,7 @@
 <?php
 /**
  * Header comum para todas as páginas
- * Variáveis esperadas: $page_title, $page_description, $page_keywords, $is_subfolder (bool)
+ * Variáveis esperadas: $page_title, $page_description, $is_subfolder (bool)
  */
 $base_path = isset($is_subfolder) && $is_subfolder ? '../' : '';
 
@@ -23,7 +23,7 @@ if ($path === '/index.php' || $path === '') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $page_title ?? ($opcoes['site_titulo'] ?? 'Caxias Tem Turismo'); ?></title>
     <meta name="description" content="<?php echo $page_description ?? ($opcoes['site_descricao'] ?? 'Descubra o melhor do turismo em Caxias do Sul.'); ?>">
-    <meta name="keywords" content="<?php echo $page_keywords ?? ($opcoes['site_keywords'] ?? 'turismo, caxias do sul, serra gaúcha'); ?>">
+
     
     <?php if(!empty($opcoes['site_analytics_id'])): ?>
     <!-- Google Analytics -->

@@ -1,4 +1,5 @@
 User-agent: *
+Disallow: /admin/
 Allow: /
 
 Sitemap: https://caxiastemturismo.com.br/sitemap.php
