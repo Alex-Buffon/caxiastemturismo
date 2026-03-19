@@ -2,6 +2,27 @@
 require_once 'config.php';
 checkLogin();
 
+// Processar Ping do Sitemap para o Google
+if (isset($_GET['ping_sitemap'])) {
+    $sitemapUrl = urlencode('https://caxiastemturismo.com.br/sitemap.php');
+    $pingUrl = "https://www.google.com/ping?sitemap=" . $sitemapUrl;
+    
+    $ch = curl_init($pingUrl);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+    curl_setopt($ch, CURLOPT_TIMEOUT, 5);
+    $response = curl_exec($ch);
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    if ($httpCode == 200) {
+        header("Location: configuracoes.php?msg=ping_sucesso");
+    } else {
+        header("Location: configuracoes.php?msg=ping_erro");
+    }
+    exit;
+}
+
 // Salvar Configurações
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     foreach ($_POST['config'] as $chave => $valor) {
@@ -66,6 +87,16 @@ while ($row = $result->fetch_assoc()) {
             <?php if(isset($_GET['msg']) && $_GET['msg'] == 'sucesso'): ?>
                 <div class="alert alert-success alert-dismissible fade show" role="alert">
                     Configurações salvas com sucesso!
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php elseif(isset($_GET['msg']) && $_GET['msg'] == 'ping_sucesso'): ?>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <i class="bi bi-check-circle-fill me-2"></i> Google notificado com sucesso! As atualizações no sitemap foram enviadas para indexação.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            <?php elseif(isset($_GET['msg']) && $_GET['msg'] == 'ping_erro'): ?>
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    Houve um problema ao notificar o Google. Tente novamente mais tarde.
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                 </div>
             <?php endif; ?>
@@ -173,6 +204,23 @@ while ($row = $result->fetch_assoc()) {
                                 <div class="col-md-4 mb-3 text-start">
                                     <label class="form-label">Link Youtube</label>
                                     <input type="text" name="config[social_youtube]" class="form-control" value="<?php echo htmlspecialchars($opcoes['social_youtube'] ?? ''); ?>">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ações Rápidas de SEO -->
+                    <div class="col-12 mt-4">
+                        <div class="card card-custom p-4 border-start border-4 border-success">
+                            <h5 class="mb-3 text-start border-bottom pb-2"><i class="bi bi-rocket-takeoff text-success me-2"></i> Indexação no Google (SEO)</h5>
+                            <div class="row">
+                                <div class="col-md-9 text-start">
+                                    <p class="mb-0 text-muted">Utilize o botão ao lado sempre que adicionar ou editar um <strong>Destino</strong>, <strong>Empreendimento</strong> ou <strong>Foto</strong>. Isso fará com que o Google decubra seu conteúdo instantaneamente e garanta a melhor classificação nas pesquisas.</p>
+                                </div>
+                                <div class="col-md-3 text-end align-self-center">
+                                    <a href="configuracoes.php?ping_sitemap=1" class="btn btn-outline-success fw-bold w-100">
+                                        <i class="bi bi-google me-1"></i> Notificar (Ping)
+                                    </a>
                                 </div>
                             </div>
                         </div>

@@ -54,6 +54,7 @@ $base_path = isset($is_subfolder) && $is_subfolder ? '../' : '';
                         <li><a href="<?php echo $base_path; ?>destinos/fazenda-souza.php">Fazenda Souza</a></li>
                         <li><a href="<?php echo $base_path; ?>destinos/terceira-legua.php">Terceira Légua</a></li>
                         <li><a href="<?php echo $base_path; ?>destinos/galopolis.php">Galópolis</a></li>
+                        <li><a href="<?php echo $base_path; ?>destinos/turismo-religioso.php">Turismo Religioso</a></li>
                     </ul>
                 </div>
                 <div class="col-lg-3 col-md-6">

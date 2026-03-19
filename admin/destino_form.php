@@ -43,6 +43,7 @@ function createSlug($string) {
 }
 
 // Salvar
+$erro = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $titulo = $_POST['titulo'] ?? '';
     $slug = !empty($_POST['slug']) ? $_POST['slug'] : createSlug($titulo);
@@ -53,32 +54,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $meta_keywords = $_POST['meta_keywords'] ?? '';
     $meta_description = $_POST['meta_description'] ?? '';
     
-    // Tratamento basico da imagem (apenas o nome para manter simples na Hostinger)
+    // Tratamento basico da imagem
     $imagem = $destino['imagem']; // original
     if(isset($_FILES['img_upload']) && $_FILES['img_upload']['error'] === UPLOAD_ERR_OK) {
         $nomeTemp = $_FILES['img_upload']['tmp_name'];
-        $nomeArquivo = time() . '_' . $_FILES['img_upload']['name'];
-        $destinoPath = '../img/' . $nomeArquivo;
-        if(move_uploaded_file($nomeTemp, $destinoPath)) {
-            $imagem = $nomeArquivo;
+        $extensao = strtolower(pathinfo($_FILES['img_upload']['name'], PATHINFO_EXTENSION));
+        $formatos_permitidos = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        
+        if (in_array($extensao, $formatos_permitidos)) {
+            $nomeArquivo = time() . '_' . preg_replace('/[^a-zA-Z0-9_.-]/', '', $_FILES['img_upload']['name']);
+            $destinoPath = '../img/' . $nomeArquivo;
+            if(move_uploaded_file($nomeTemp, $destinoPath)) {
+                $imagem = $nomeArquivo;
+            }
+        } else {
+            $erro = "Formato de imagem não permitido. Use JPG, PNG, GIF ou WEBP.";
         }
     } else if(!empty($_POST['imagem_nome'])) {
         $imagem = $_POST['imagem_nome'];
     }
     
-    if($id > 0) {
-        // Update
-        $stmt_up = $conn->prepare("UPDATE destinos SET titulo=?, slug=?, descricao=?, imagem=?, tags=?, ordem=?, is_featured=?, meta_keywords=?, meta_description=? WHERE id=?");
-        $stmt_up->bind_param("sssssiissi", $titulo, $slug, $descricao, $imagem, $tags, $ordem, $is_featured, $meta_keywords, $meta_description, $id);
-        $stmt_up->execute();
-    } else {
-        // Insert
-        $stmt_in = $conn->prepare("INSERT INTO destinos (titulo, slug, descricao, imagem, tags, ordem, is_featured, meta_keywords, meta_description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt_in->bind_param("sssssiiss", $titulo, $slug, $descricao, $imagem, $tags, $ordem, $is_featured, $meta_keywords, $meta_description);
-        $stmt_in->execute();
+    if (empty($erro)) {
+        if($id > 0) {
+            // Update
+            $stmt_up = $conn->prepare("UPDATE destinos SET titulo=?, slug=?, descricao=?, imagem=?, tags=?, ordem=?, is_featured=?, meta_keywords=?, meta_description=? WHERE id=?");
+            $stmt_up->bind_param("sssssiissi", $titulo, $slug, $descricao, $imagem, $tags, $ordem, $is_featured, $meta_keywords, $meta_description, $id);
+            $stmt_up->execute();
+        } else {
+            // Insert
+            $stmt_in = $conn->prepare("INSERT INTO destinos (titulo, slug, descricao, imagem, tags, ordem, is_featured, meta_keywords, meta_description) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt_in->bind_param("sssssiiss", $titulo, $slug, $descricao, $imagem, $tags, $ordem, $is_featured, $meta_keywords, $meta_description);
+            $stmt_in->execute();
+        }
+        header("Location: destinos.php?msg=sucesso");
+        exit;
     }
-    header("Location: destinos.php?msg=sucesso");
-    exit;
 }
 ?>
 <!DOCTYPE html>
@@ -123,6 +133,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <i class="bi bi-arrow-left"></i> Voltar
                 </a>
             </div>
+
+            <?php if(!empty($erro)): ?>
+                <div class="alert alert-danger mb-4"><?php echo $erro; ?></div>
+            <?php endif; ?>
 
             <div class="card card-custom">
                 <div class="card-body p-4">

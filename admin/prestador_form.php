@@ -22,6 +22,7 @@ if ($id > 0) {
     }
 }
 
+$erro = '';
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $nome = $_POST['nome'];
     $tipo = $_POST['tipo'];
@@ -32,26 +33,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Upload de Imagem
     if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] == 0) {
-        $ext = pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION);
-        $novo_nome = 'servico_' . time() . '.' . $ext;
-        if (move_uploaded_file($_FILES['imagem']['tmp_name'], '../img/' . $novo_nome)) {
-            $imagem_final = $novo_nome;
+        $ext = strtolower(pathinfo($_FILES['imagem']['name'], PATHINFO_EXTENSION));
+        $formatos_permitidos = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        
+        if (in_array($ext, $formatos_permitidos)) {
+            $novo_nome = 'servico_' . time() . '_' . preg_replace('/[^a-zA-Z0-9_.-]/', '', $_FILES['imagem']['name']);
+            if (move_uploaded_file($_FILES['imagem']['tmp_name'], '../img/' . $novo_nome)) {
+                $imagem_final = $novo_nome;
+            }
+        } else {
+            $erro = "Formato de imagem não permitido. Use JPG, PNG, GIF ou WEBP.";
         }
     }
 
-    if ($id > 0) {
-        $stmt = $conn->prepare("UPDATE prestadores SET nome=?, tipo=?, descricao=?, imagem=?, link_mapa=?, contato=? WHERE id=?");
-        $stmt->bind_param("ssssssi", $nome, $tipo, $descricao, $imagem_final, $link_mapa, $contato, $id);
-    } else {
-        $stmt = $conn->prepare("INSERT INTO prestadores (nome, tipo, descricao, imagem, link_mapa, contato) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->bind_param("ssssss", $nome, $tipo, $descricao, $imagem_final, $link_mapa, $contato);
-    }
+    if (empty($erro)) {
+        if ($id > 0) {
+            $stmt = $conn->prepare("UPDATE prestadores SET nome=?, tipo=?, descricao=?, imagem=?, link_mapa=?, contato=? WHERE id=?");
+            $stmt->bind_param("ssssssi", $nome, $tipo, $descricao, $imagem_final, $link_mapa, $contato, $id);
+        } else {
+            $stmt = $conn->prepare("INSERT INTO prestadores (nome, tipo, descricao, imagem, link_mapa, contato) VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("ssssss", $nome, $tipo, $descricao, $imagem_final, $link_mapa, $contato);
+        }
 
-    if ($stmt->execute()) {
-        header("Location: prestadores.php?msg=sucesso");
-        exit;
-    } else {
-        $erro = "Erro ao salvar: " . $conn->error;
+        if ($stmt->execute()) {
+            header("Location: prestadores.php?msg=sucesso");
+            exit;
+        } else {
+            $erro = "Erro ao salvar: " . $conn->error;
+        }
     }
 }
 ?>
@@ -98,8 +107,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 </a>
             </div>
 
-            <?php if(isset($erro)): ?>
-                <div class="alert alert-danger"><?php echo $erro; ?></div>
+            <?php if(!empty($erro)): ?>
+                <div class="alert alert-danger mb-4"><?php echo $erro; ?></div>
             <?php endif; ?>
 
             <div class="card card-form">

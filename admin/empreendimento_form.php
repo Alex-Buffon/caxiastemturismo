@@ -35,6 +35,7 @@ if ($id > 0) {
 }
 
 // Salvar no Banco
+$erro = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $titulo = $_POST['titulo'] ?? '';
     $destino_id = (int)$_POST['destino_id'];
@@ -44,32 +45,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $tags = $_POST['tags'] ?? '';
     $alt_text = $_POST['alt_text'] ?? '';
     
-    // Tratamento basico da imagem
+    // Tratamento da imagem
     $imagem = $empreendimento['imagem'];
     if(isset($_FILES['img_upload']) && $_FILES['img_upload']['error'] === UPLOAD_ERR_OK) {
         $nomeTemp = $_FILES['img_upload']['tmp_name'];
-        $nomeArquivo = 'emp_' . time() . '_' . $_FILES['img_upload']['name'];
-        $destinoPath = '../img/' . $nomeArquivo;
-        if(move_uploaded_file($nomeTemp, $destinoPath)) {
-            $imagem = $nomeArquivo;
+        $extensao = strtolower(pathinfo($_FILES['img_upload']['name'], PATHINFO_EXTENSION));
+        $formatos_permitidos = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        
+        if (in_array($extensao, $formatos_permitidos)) {
+            $nomeArquivo = 'emp_' . time() . '_' . preg_replace('/[^a-zA-Z0-9_.-]/', '', $_FILES['img_upload']['name']);
+            $destinoPath = '../img/' . $nomeArquivo;
+            if(move_uploaded_file($nomeTemp, $destinoPath)) {
+                $imagem = $nomeArquivo;
+            }
+        } else {
+            $erro = "Formato de imagem não permitido. Use JPG, PNG, GIF ou WEBP.";
         }
     } else if(!empty($_POST['imagem_nome'])) {
         $imagem = $_POST['imagem_nome'];
     }
     
-    if($id > 0) {
-        // Update
-        $stmt_up = $conn->prepare("UPDATE empreendimentos SET destino_id=?, titulo=?, descricao=?, contato=?, endereco=?, imagem=?, tags=?, alt_text=? WHERE id=?");
-        $stmt_up->bind_param("isssssssi", $destino_id, $titulo, $descricao, $contato, $endereco, $imagem, $tags, $alt_text, $id);
-        $stmt_up->execute();
-    } else {
-        // Insert
-        $stmt_in = $conn->prepare("INSERT INTO empreendimentos (destino_id, titulo, descricao, contato, endereco, imagem, tags, alt_text) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt_in->bind_param("isssssss", $destino_id, $titulo, $descricao, $contato, $endereco, $imagem, $tags, $alt_text);
-        $stmt_in->execute();
+    if (empty($erro)) {
+        if($id > 0) {
+            // Update
+            $stmt_up = $conn->prepare("UPDATE empreendimentos SET destino_id=?, titulo=?, descricao=?, contato=?, endereco=?, imagem=?, tags=?, alt_text=? WHERE id=?");
+            $stmt_up->bind_param("isssssssi", $destino_id, $titulo, $descricao, $contato, $endereco, $imagem, $tags, $alt_text, $id);
+            $stmt_up->execute();
+        } else {
+            // Insert
+            $stmt_in = $conn->prepare("INSERT INTO empreendimentos (destino_id, titulo, descricao, contato, endereco, imagem, tags, alt_text) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt_in->bind_param("isssssss", $destino_id, $titulo, $descricao, $contato, $endereco, $imagem, $tags, $alt_text);
+            $stmt_in->execute();
+        }
+        header("Location: empreendimentos.php?msg=sucesso");
+        exit;
     }
-    header("Location: empreendimentos.php?msg=sucesso");
-    exit;
 }
 ?>
 <!DOCTYPE html>
@@ -114,6 +124,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <i class="bi bi-arrow-left"></i> Voltar
                 </a>
             </div>
+
+            <?php if(!empty($erro)): ?>
+                <div class="alert alert-danger mb-4"><?php echo $erro; ?></div>
+            <?php endif; ?>
 
             <div class="card card-custom">
                 <div class="card-body p-4">
