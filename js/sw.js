@@ -1,7 +1,8 @@
-const CACHE_NAME = 'caxias-turismo-v1';
+const CACHE_NAME = 'caxias-turismo-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.php',
+  '/manifest.json',
   '/css/style.css',
   '/img/img1.png',
   '/img/img.santalucia.png',

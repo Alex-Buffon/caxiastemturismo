@@ -1,4 +1,11 @@
-# Caxias Tem Turismo - Configurações Apache
+# Caxias Tem Turismo - Configurações Apache (Hostinger Ready)
+
+# Forçar HTTPS (SSL)
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
 
 # Compressão GZIP
 <IfModule mod_deflate.c>
@@ -26,7 +33,7 @@
 </IfModule>
 
 # Páginas de erro
-ErrorDocument 404 /caxias_dev/index.php
+ErrorDocument 404 /index.php
 
 # UTF-8 encoding
 AddDefaultCharset UTF-8

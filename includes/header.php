@@ -37,6 +37,11 @@ if ($path === '/index.php' || $path === '') {
     <?php endif; ?>
 
     <meta name="theme-color" content="#2E4636">
+    <link rel="manifest" href="<?php echo $base_path; ?>manifest.json">
+    <link rel="apple-touch-icon" href="<?php echo $base_path; ?>img/img1.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Caxias Tur">
     <meta name="robots" content="index, follow">
     <meta name="author" content="Caxias Tem Turismo">
     
@@ -99,7 +104,9 @@ if ($path === '/index.php' || $path === '') {
       "sameAs": [
         "<?php echo $opcoes['social_facebook'] ?? ''; ?>",
         "<?php echo $opcoes['social_instagram'] ?? ''; ?>"
-      ]
+      ]<?php if(!empty($schema_aggregate_rating)): ?>,
+      "aggregateRating": <?php echo $schema_aggregate_rating; ?>
+      <?php endif; ?>
     }
     </script>
 

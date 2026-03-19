@@ -35,6 +35,43 @@ if (isset($_GET['testimonial_status'])) {
 $page_title = $opcoes['site_titulo'] ?? "Caxias Tem Turismo - Roteiros, Gastronomia e Natureza na Serra Gaúcha";
 $page_description = $opcoes['site_descricao'] ?? "Descubra o melhor do turismo em Caxias do Sul. Explore roteiros de charme, gastronomia típica italiana, vinícolas, e as belezas naturais da Serra Gaúcha.";
 
+// --- SEO Avançado e Web Core Vitals ---
+
+// 1. Preload da imagem LCP (Primeiro Banner) para carregar instantaneamente
+$primeiro_banner = "img1.png";
+if (isset($res_banners) && $res_banners->num_rows > 0) {
+    $res_banners->data_seek(0);
+    $fb = $res_banners->fetch_assoc();
+    if (!empty($fb['imagem'])) $primeiro_banner = $fb['imagem'];
+    $res_banners->data_seek(0); // reset pointer
+}
+$extra_head = '<link rel="preload" as="image" href="img/' . htmlspecialchars($primeiro_banner) . '">';
+
+// 2. Schema AggregateRating (Para o Google exibir 5 estrelas nos resultados)
+$total_avaliacoes = 0;
+$soma_avaliacoes = 0;
+if (isset($res_testimonials) && $res_testimonials->num_rows > 0) {
+    $res_testimonials->data_seek(0);
+    while($t = $res_testimonials->fetch_assoc()) {
+        if (!empty($t['nota'])) {
+            $total_avaliacoes++;
+            $soma_avaliacoes += (int) $t['nota'];
+        }
+    }
+    $res_testimonials->data_seek(0);
+}
+
+if ($total_avaliacoes > 0) {
+    $media_avaliacoes = round($soma_avaliacoes / $total_avaliacoes, 1);
+    $schema_aggregate_rating = json_encode([
+        "@type" => "AggregateRating",
+        "ratingValue" => (string)$media_avaliacoes,
+        "reviewCount" => (string)$total_avaliacoes,
+        "bestRating" => "5",
+        "worstRating" => "1"
+    ], JSON_UNESCAPED_UNICODE);
+}
+
 require_once 'includes/header.php';
 ?>
 <body>

@@ -3,11 +3,17 @@ if (session_status() === PHP_SESSION_NONE && !headers_sent()) {
     session_start();
 }
 
-$host = 'localhost';
-$db   = 'caxiasturismo';
-$user = 'root'; // Padrão do XAMPP
-$pass = '';     // Padrão do XAMPP
+// == CONFIGURAÇÕES DE SERVIDOR (PRODUÇÃO) ==
+date_default_timezone_set('America/Sao_Paulo');
+error_reporting(E_ALL & ~E_NOTICE & ~E_DEPRECATED);
+ini_set('display_errors', 0); // Mude para 1 apenas se precisar debugar algum erro na Hostinger
 
+// == CONFIGURAÇÃO DO BANCO DE DADOS (HOSTINGER) ==
+// Substitua as variáveis pelos dados gerados no hPanel
+$host = 'localhost';
+$db   = 'caxiasturismo'; // Ex: u123456789_caxias
+$user = 'root';          // Ex: u123456789_admin
+$pass = '';              // A senha do banco de dados na Hostinger
 // Tentar conectar
 $conn = new mysqli($host, $user, $pass, $db);
 

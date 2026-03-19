@@ -187,11 +187,18 @@ h1, h2, h3, h4, h5, h6 {
     transform: scale(1.2);
 }
 
-.hero h1 {
+.hero h1, .hero h2 {
     font-size: 3.8rem;
     font-weight: 700;
     color: var(--white);
     text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.6);
+}
+
+.hero .lead, .hero p.lead {
+    color: var(--white);
+    font-weight: 400;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+    opacity: 1;
 }
 
 /*-- -------------------------- -->
@@ -362,6 +369,7 @@ h1, h2, h3, h4, h5, h6 {
 .btn-primary {
     background-color: var(--primary);
     border-color: var(--primary);
+    color: var(--white) !important;
     font-weight: 700;
     padding: 12px 30px;
     border-radius: 50px; /* Pill-shaped buttons */
@@ -441,14 +449,16 @@ iframe:hover {
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 0.75rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    color: var(--white);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
 }
 
 .card-img-overlay .card-text {
     font-size: 1rem;
     line-height: 1.6;
     font-weight: 500;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+    color: rgba(255, 255, 255, 0.95);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
     display: -webkit-box;
     display: box;
     -webkit-line-clamp: 3;

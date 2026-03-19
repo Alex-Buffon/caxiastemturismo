@@ -1,0 +1,18 @@
+{
+  "name": "Caxias Tem Turismo",
+  "short_name": "Caxias Turismo",
+  "description": "Descubra o melhor do turismo em Caxias do Sul.",
+  "start_url": "/index.php",
+  "display": "standalone",
+  "background_color": "#2E4636",
+  "theme_color": "#2E4636",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/img/img1.png",
+      "sizes": "192x192 256x256 512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
