@@ -74,6 +74,7 @@ while ($row = $result->fetch_assoc()) {
             <a href="galeria.php"><i class="bi bi-images me-2"></i> Galeria de Fotos</a>
             <a href="banners.php"><i class="bi bi-layout-three-columns me-2"></i> Banners (Slides)</a>
             <a href="testimonials.php"><i class="bi bi-chat-left-text me-2"></i> Depoimentos</a>
+            <a href="comunidade_moderar.php"><i class="bi bi-globe me-2"></i> Comunidade</a>
             <a href="configuracoes.php" class="active"><i class="bi bi-gear-fill me-2"></i> Configurações</a>
             <a href="logout.php" class="text-danger mt-5"><i class="bi bi-box-arrow-right me-2"></i> Sair</a>
         </div>

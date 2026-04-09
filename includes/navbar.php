@@ -32,7 +32,7 @@ $home_link = $base_path . 'index.php';
                         <li><a class="dropdown-item" href="<?php echo $base_path; ?>servicos/agentes-de-turismo.php">Agentes de Turismo</a></li>
                         <li><a class="dropdown-item" href="<?php echo $base_path; ?>servicos/transportadores-turisticos.php">Transportadores Turísticos</a></li>
                     </ul>
-                </li>
+                <li class="nav-item"><a class="nav-link fw-bold text-primary" href="<?php echo $base_path; ?>comunidade.php"><i class="bi bi-people-fill"></i> Comunidade</a></li>
                 <li class="nav-item"><a class="nav-link" href="<?php echo $home_link; ?>#contato">Contato</a></li>
             </ul>
         </div>
