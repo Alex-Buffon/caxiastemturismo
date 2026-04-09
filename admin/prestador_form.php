@@ -9,7 +9,8 @@ $p = [
     'descricao' => '',
     'imagem' => '',
     'link_mapa' => '',
-    'contato' => ''
+    'contato' => '',
+    'url_contato' => ''
 ];
 
 if ($id > 0) {
@@ -29,6 +30,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $descricao = $_POST['descricao'];
     $link_mapa = $_POST['link_mapa'];
     $contato = $_POST['contato'];
+
+    $url_contato = trim($_POST['url_contato'] ?? '');
+    if (preg_match('/^[0-9\-\(\)\+ ]+$/', $url_contato)) {
+        $url_contato = preg_replace('/[^0-9]/', '', $url_contato);
+    }
+
     $imagem_final = $p['imagem'];
 
     // Upload de Imagem
@@ -48,11 +55,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (empty($erro)) {
         if ($id > 0) {
-            $stmt = $conn->prepare("UPDATE prestadores SET nome=?, tipo=?, descricao=?, imagem=?, link_mapa=?, contato=? WHERE id=?");
-            $stmt->bind_param("ssssssi", $nome, $tipo, $descricao, $imagem_final, $link_mapa, $contato, $id);
+            $stmt = $conn->prepare("UPDATE prestadores SET nome=?, tipo=?, descricao=?, imagem=?, link_mapa=?, contato=?, url_contato=? WHERE id=?");
+            $stmt->bind_param("sssssssi", $nome, $tipo, $descricao, $imagem_final, $link_mapa, $contato, $url_contato, $id);
         } else {
-            $stmt = $conn->prepare("INSERT INTO prestadores (nome, tipo, descricao, imagem, link_mapa, contato) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->bind_param("ssssss", $nome, $tipo, $descricao, $imagem_final, $link_mapa, $contato);
+            $stmt = $conn->prepare("INSERT INTO prestadores (nome, tipo, descricao, imagem, link_mapa, contato, url_contato) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt->bind_param("sssssss", $nome, $tipo, $descricao, $imagem_final, $link_mapa, $contato, $url_contato);
         }
 
         if ($stmt->execute()) {
@@ -151,6 +158,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
                         </div>
                     </div>
+
+                    <div class="mb-3">
+                        <label for="url_contato" class="form-label">Número do WhatsApp (Apenas Números com DDD) ou URL do Site</label>
+                        <input type="text" class="form-control" id="url_contato" name="url_contato" value="<?php echo htmlspecialchars($p['url_contato']); ?>" placeholder="Ex: 54999999999">
+                    </div>
+
 
                     <div class="mb-3">
                         <label for="imagem" class="form-label">Imagem do Prestador</label>

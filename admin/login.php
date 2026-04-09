@@ -107,7 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <form action="login.php" method="POST">
                         <div class="mb-3">
                             <label for="email" class="form-label">E-mail</label>
-                            <input type="email" class="form-control" id="email" name="email" required placeholder="admin@caxiasturismo.com.br">
+                            <input type="email" class="form-control" id="email" name="email" required placeholder="admin@caxiastemturismo.com.br">
                         </div>
                         <div class="mb-4">
                             <label for="senha" class="form-label">Senha</label>

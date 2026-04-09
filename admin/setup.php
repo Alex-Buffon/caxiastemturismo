@@ -2,7 +2,7 @@
 require_once 'config.php';
 
 $nome = 'Administrador';
-$email = 'admin@caxiasturismo.com.br';
+$email = 'admin@caxiastemturismo.com.br';
 $senha_pura = 'admin';
 $senha_hash = password_hash($senha_pura, PASSWORD_BCRYPT);
 
